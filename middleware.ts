@@ -11,9 +11,9 @@ export default withAuth(async( req ) => {
     if(!token){
         return NextResponse.redirect(new URL('/login', req.url))
     }
-    const user = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user?token=${token.jwtToken}`);
-    const json = await user.json();
-    if(!json.user){
-        return NextResponse.redirect(new URL('/login', req.url));
-    }
+    // const user = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user?token=${token.jwtToken}`);
+    // const json = await user.json();
+    // if(!json.user){
+    //     return NextResponse.redirect(new URL('/login', req.url));
+    // }
 })
