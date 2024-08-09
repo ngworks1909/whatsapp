@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Friend" ADD COLUMN     "mobile" TEXT NOT NULL DEFAULT '9014115604';

@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId           String    @id @default(cuid())
+  username         String
+  email            String    @unique
+  password         String
+  image            String    @default("https://github.com/shadcn.png")
+  mobile           String    @unique
+  token            String    @default("")
+  requestCount     Int       @default(0)
+  friends          Friend[]  @relation("Friends")
+  associates       Friend[]  @relation("Associates")
+  outgoingRequests Request[] @relation("Initiator")
+  incomingRequests Request[] @relation("Recipient")
+}
+
+model Friend {
+  userId           String    @id
+  user             User      @relation("Friends", fields: [userId], references: [userId])
+  // combinedId   String    @id
+  friendId         String
+  friend           User      @relation("Associates", fields: [friendId], references: [userId])
+  image            String
+  username         String
+  email            String
+  mobile           String
+  lastMessage      String    @default("")
+  time             DateTime  @default(now())
+  messageCount     Int       @default(0)
+  incomingMessages Message[] @relation("Reciever")
+  outgoingMessages Message[] @relation("Sender")
+}
+
+model Message {
+  messageId      Int      @id @default(autoincrement())
+  message        String
+  date           DateTime @default(now())
+  senderId       String
+  sender         Friend   @relation("Sender", fields: [senderId], references: [userId])
+  recieverId     String   @default("clz3xtbkd00001oojyzjerm4y")
+  reciever       Friend   @relation("Reciever", fields: [recieverId], references: [userId])
+  senderDelete   Boolean  @default(false)
+  recieverDelete Boolean  @default(false)
+}
+
+model Request {
+  requestId   String   @id @default(cuid())
+  recieverId  String   
+  reciever    User     @relation("Recipient", fields: [recieverId], references: [userId])
+  senderId    String
+  sender      User     @relation("Initiator", fields: [senderId], references: [userId])
+  senderName  String
+  senderEmail String
+  senderImage String
+  sentDate    DateTime @default(now())
+  status      Status   @default(Sent)
+}
+
+enum Status {
+  Sent
+  Friends
+}
