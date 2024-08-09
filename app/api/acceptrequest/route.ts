@@ -1,8 +1,6 @@
 import prisma from "@/db/src/index";
 import { db } from "@/firebase/firebase";
-import { NEXT_AUTH_CONFIG } from "@/lib/auth";
 import { arrayUnion, doc, getDoc, runTransaction } from "firebase/firestore";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
