@@ -7,6 +7,8 @@ import React from 'react'
 export default async function page() {
   const session = await getServerSession(NEXT_AUTH_CONFIG);
   const user = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user?token=${session.user.token}`);
+
+
   if(user){
     redirect("/")
   }
