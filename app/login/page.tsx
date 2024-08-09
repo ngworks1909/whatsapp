@@ -6,7 +6,7 @@ import React from 'react'
 
 export default async function page() {
   const session = await getServerSession(NEXT_AUTH_CONFIG);
-    if(session.user){
+    if(session?.user){
         redirect('/')
     }
   return (
