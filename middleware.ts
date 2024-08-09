@@ -1,6 +1,5 @@
 import { withAuth } from 'next-auth/middleware'
 import { NextResponse } from 'next/server';
-import { signOut } from "next-auth/react";
 
 
 export const config = {
@@ -15,7 +14,6 @@ export default withAuth(async( req ) => {
     const user = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user?token=${token.jwtToken}`);
     const json = await user.json();
     if(!json.user){
-        await signOut();
         return NextResponse.redirect(new URL('/login', req.url));
     }
 })
